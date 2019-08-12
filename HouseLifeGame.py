@@ -20,21 +20,39 @@ def garden(items, times):
 			  "have many different plants that need\n"
 			  "taken care of.\n")
 		times = 1
-	print("You are in the garden\n")
-	response = valid_input("What do you want to do?\n"
-			  "1. Water the flowers\n"
-			  "2. Pick up crops\n"
-			  "3. Transfer lillies in a bigger pot\n"
-			  "4. Go inside\n", valid_garden_inputs)
-	if response == "1":
-		print("You water the flowers\n")
-	elif response == "2":
-		print("You need a basket. You recall\n"
-			  "seeing your basket inside the shelf\n"
-			  "under the sink\n")
 	else:
-		return
-
+		print("You are in the garden\n")
+		response = valid_input("What do you want to do?\n"
+				  "1. Water the flowers\n"
+				  "2. Pick up crops\n"
+				  "3. Transfer lillies in a bigger pot\n"
+				  "4. Go inside\n", valid_garden_inputs)
+		if response == "1":
+			if "watered" in items:
+				print("You already did that")
+			else:
+				items.append("watered")
+				print("You water the flowers\n")
+		elif response == "2":
+			if "basket" in items:
+				print("\nYou harvest tomatoes, cherries,\n"
+					  "pears, blackcurrants, and corn.\n"
+					  "You take the basket in the kitchen\n")
+				kitchen(2, items)
+			else:
+				print("You need a basket. You recall\n"
+				  "seeing your basket inside the shelf\n"
+				  "under the sink\n")
+		elif response == "3":
+			print("\nYou transfer the lillies to a bigger pot\n"
+			      "You also make a bouquet for your wife\n")
+			items.append("bouquet")
+			
+		else:
+			print("\nYou go in the living room\n")
+			living_room(items, 1)
+	garden(items, times)
+	
 		
 def kitchen(items, times):
 	valid_kitchen_inputs = ["1", "2", "3", "4"]
@@ -44,10 +62,11 @@ def kitchen(items, times):
 		"in front of the sink. On your left\n"
 		"your left you have a kettle, and on\n"
 		"your right the stove\n")
-	else:
+	elif times == 1:
 		print("You are standing in the kitchen\n"
 		     "in front of the sink\n")
-	response = valid_input("What do you want to do?\n"
+	if times == 1 or times == 0:
+		response = valid_input("What do you want to do?\n"
 				"1. Make tea\n"
 				"2. Cook breakfast\n"
 				"3. Get the basket\n"
@@ -55,6 +74,13 @@ def kitchen(items, times):
 				"   shelf under the\n"
 				"   sink\n"
 				"4. Go to the living room\n", valid_kitchen_inputs)
+	else:
+		response = valid_input("What do you want to do?\n"
+				"1. Make tea\n"
+				"2. Cook breakfast\n"
+				"3. Taxinomise harvest in the fridge\n"
+				"4. Go to the living room\n", valid_kitchen_inputs)
+	
 	if response == "1":
 		if "cup" in items:
 			print("You already had a cup of tea\n"
@@ -91,27 +117,52 @@ def kitchen(items, times):
 				print("You could have a cup of tea with\n"
 				      "some chocolate for dessert\n")
 	elif response == "3":
-		if "basket" in items:
-			print("You have already taken the basket\n"
-			      "out of the shelf\n")
+		if times == 2:
+			print("\nYou taxinomize your harvest in\n"
+				  "the appropriate fridge shells\n")
+			if "paper" in items and "cup" in items and "pan" in items and "watered" in items:
+				print("\nYou are now really tired."
+				      "\nYou sit on your couch and\n"
+					  "\nplay a video game\n")
+				return
+			else:
+				kitchen(times, items)
+					 
 		else:
-			items.append("bakset")
-			print("You pick up the basket\n")
+			if "basket" in items:
+				print("You have already picked up basket\n"
+					  "out of the shelf\n")
+			else:
+				items.append("basket")
+				print("You pick up the basket\n")
 	else:
 		living_room(items, 1)
 	kitchen(items, 1)
 	
 def living_room(items, times):
 	accepted_living_room_inputs = ["1", "2", "3"]
+	accepted_living_room_inputs_2 = ["1", "2", "3", "4"]
+
 	if times == 1:
 		print("You are standing in the living room\n"
 			  "in front of the door to the garden\n")
-
-	response = valid_input("What do you want to do?\n"
-		"1. Go out\n"
-		"2. Sit down\n"
-		"3. Go to the kitchen\n", accepted_living_room_inputs)
-
+	if "bouquet" not in items:
+		response = valid_input("What do you want to do?\n"
+			"1. Go out\n"
+			"2. Sit down\n"
+			"3. Go to the kitchen\n", accepted_living_room_inputs)
+	elif "vase" in items:
+		response = valid_input("What do you want to do?\n"
+			"1. Go out\n"
+			"2. Sit down\n"
+			"3. Go to the kitchen\n" 
+			"4. Smell the lillies\n", accepted_living_room_inputs_2)
+	else:
+		response = valid_input("What do you want to do?\n"
+			"1. Go out\n"
+			"2. Sit down\n"
+			"3. Go to the kitchen\n"
+			"4. Put lillies bouquet on the vase", accepted_living_room_inputs_2)
 	if response == "1":
 		if "keys" in items:
 			garden(items, 0)
@@ -120,8 +171,15 @@ def living_room(items, times):
 			living_room(items, 0)
 	elif response == "2":
 		desk(items, 0)
-	else:
+	elif response == "3":
 		kitchen(items, 0)
+	else:
+		if  "vase" in items:
+			print("\nYou smell the lillies\n")
+		else:
+			print("\nYou put the lillies in a vase\n")
+			items.append("vase")
+			living_room(items, times)
 	
 
 	
@@ -129,17 +187,24 @@ def desk(items, times):
 		
 	valid_desk_inputs = ["1", "2", "3"]
 	if times == 0:
-		if "keys" not in items:
+		if "paper" not in items and "keys" not in items:
 			print("You sit down on your desk,\n"
 				  "that is next to the window.In\n"
 				  "a little box on your right you\n"
 				  "see the keys for the garden door.\n"
 				  "as well as some pencils and papers\n")
-		else:
+		elif "paper" in items and "keys" not in items:
 			print("You sit down on your desk,\n"
 				  "that is next to the window.In\n"
 				  "front of you, you see the paper\n"
-				  "with the drawings you did earlier.\n")
+				  "with the drawings you did earlier.\n"
+				  "On the little box on your right there"
+				  "is the key for the garden door\n")
+		else:
+			print("You sit down on your desk\n"
+				  "In front of you, you see \n"
+				  "the drawing you did earlier\n")
+			
 
 		times = 1
 	if "keys" not in items:
@@ -152,14 +217,19 @@ def desk(items, times):
 			items.append("keys")
 		elif response == "2":
 			print("You do some drawing")
+			items.append("paper")
 		elif response == "3":
 			living_room(items, 1)
 		desk(items, times)
 	else:
 		response =valid_input("1. Draw a picture\n"
 			  "2. Stand up\n", ["1", "2"])
-		if response == "1":
+		if response == "1" and "paper" in items:
 			print("You have no more paper left")
+			desk(items, times)
+		elif response == "1" and "paper" not in items:
+			print("\nYou do some drawing\n")
+			items.append("paper")
 			desk(items, times)
 		else:
 			living_room(items, 1)
