@@ -306,8 +306,8 @@ def intro(items):
 
 
 def print_pause(string_input):
-	time.sleep(1)
-	print(string_input.center(40))
+	time.sleep(2)
+	print(string_input)
 	print("\n")
 
 
