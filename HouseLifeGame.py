@@ -38,7 +38,9 @@ def garden(items, times):
 				print("\nYou harvest tomatoes, cherries,\n"
 					  "pears, blackcurrants, and corn.\n"
 					  "You take the basket in the kitchen\n")
-				kitchen(2, items)
+				items.append("full_basket")
+				
+				kitchen(items, 1)
 			else:
 				print("You need a basket. You recall\n"
 				  "seeing your basket inside the shelf\n"
@@ -65,7 +67,7 @@ def kitchen(items, times):
 	elif times == 1:
 		print("You are standing in the kitchen\n"
 		     "in front of the sink\n")
-	if times == 1 or times == 0:
+	if "basket" not in items:
 		response = valid_input("What do you want to do?\n"
 				"1. Make tea\n"
 				"2. Cook breakfast\n"
@@ -75,12 +77,20 @@ def kitchen(items, times):
 				"   sink\n"
 				"4. Go to the living room\n", valid_kitchen_inputs)
 	else:
-		response = valid_input("What do you want to do?\n"
+		if "basket" in items and "full_basket" not in items or "empty_basket" in items:
+			response = valid_input("What do you want to do?\n"
+				"1. Make tea\n"
+				"2. Cook breakfast\n"
+				"3. Drink some water\n"
+				"4. Go to the living room\n", valid_kitchen_inputs)
+
+		if "full_basket" in items and "empty_basket" not in items:
+			response = valid_input("What do you want to do?\n"
 				"1. Make tea\n"
 				"2. Cook breakfast\n"
 				"3. Taxinomise harvest in the fridge\n"
 				"4. Go to the living room\n", valid_kitchen_inputs)
-	
+
 	if response == "1":
 		if "cup" in items:
 			print("You already had a cup of tea\n"
@@ -117,24 +127,27 @@ def kitchen(items, times):
 				print("You could have a cup of tea with\n"
 				      "some chocolate for dessert\n")
 	elif response == "3":
-		if times == 2:
+		if "basket" not in items:
+			items.append("basket")
+			print("You pick up the basket\n")
+		elif "basket" in items and "full_basket" not in items:
+			print("\nYou drink some water\n")
+		elif "empty_basket" not in items and "full_basket" in items:
 			print("\nYou taxinomize your harvest in\n"
 				  "the appropriate fridge shells\n")
-			if "paper" in items and "cup" in items and "pan" in items and "watered" in items:
+			items.append("empty_basket")
+		elif "empty_basket" in items:
+			print("\nYou drink some water.\n")
+			if "paper" in items and "cup" in items and "pan" in items and "watered" in items and "bouquet" in items:
 				print("\nYou are now really tired."
-				      "\nYou sit on your couch and\n"
-					  "\nplay a video game\n")
-				return
-			else:
-				kitchen(times, items)
-					 
+				  "\nYou sit on your couch and\n"
+				  "\nplay a video game.\n"
+				  "\nThank you for playing!! Bye for now.\n")
+				exit()
 		else:
 			if "basket" in items:
 				print("You have already picked up basket\n"
 					  "out of the shelf\n")
-			else:
-				items.append("basket")
-				print("You pick up the basket\n")
 	else:
 		living_room(items, 1)
 	kitchen(items, 1)
@@ -175,7 +188,8 @@ def living_room(items, times):
 		kitchen(items, 0)
 	else:
 		if  "vase" in items:
-			print("\nYou smell the lillies\n")
+			print("\nYou smell the lillies\n") 
+			living_room(items, 1)
 		else:
 			print("\nYou put the lillies in a vase\n")
 			items.append("vase")
