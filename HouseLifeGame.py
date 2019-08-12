@@ -306,7 +306,12 @@ def instructions(times):
         print_pause("Welcome to House Life!\n\n"
                     "Developed by Dimitrios Malonas\n")
     print_pause("\nTo play the game you make choices\n"
-                "based on the different menu options.\n")
+                "based on the different menu options.\n"
+                "You need to find the correct sequence\n"
+                "of activities to finish the game\n"
+                "(One example sequence is: [no, 2, 2, 1,"
+                "2, 3, 1, 1, 2, 2, 3, 3, 4, 1,"
+                "1, 3, 4, 4, 1, 2, 3, 3]")
     response = valid_input("Do you need more instructions?\n"
                            "1. Yes\n2. No\n", ["yes", "no"])
     if response == "yes":
