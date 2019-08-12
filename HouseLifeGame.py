@@ -1,5 +1,5 @@
 import time
-
+import random
 
 def valid_input(prompt, options):
 	while True:
@@ -122,10 +122,11 @@ def kitchen(items, times):
 				  "Eating again would not be the\n"
 				  "healthiest choice\n")
 			if "cup" in items and "bouquet" in items and "full_basket" in items and "empty_basket" in items:
+			if "cup" in items and "bouquet" in items and "full_basket" in items and "empty_basket" in items:
 				print("\nYou should consider taking some rest\n\n")
 			elif "cup" in items and ("bouquet" not in items or "full_basket" not in items or "empty_basket" not in items):
 				print("You could do some activity\n"
-					  "I believe that there are lot of \n"
+					  "I believe that there might be some \n"
 					  "unfinished activities left in\n"
 					  "the garden.\n\n")
 			elif "cup" not in items:
@@ -143,12 +144,20 @@ def kitchen(items, times):
 			items.append("empty_basket")
 		elif "empty_basket" in items:
 			print("\n\nYou drink some water.\n\n")
-			if "paper" in items and "cup" in items and "pan" in items and "watered" in items and "bouquet" in items:
+			if "paper" in items and "cup" in items and "pan" in items and "watered" in items and "bouquet" in items and "vase" in items:
+				device_choices = ["laptop", "XBox", "PS4", "iPhone"]
+				device = random.choice(device_choices)
 				print("\n\nYou are really tired."
 				  "\nYou sit on your couch and\n"
-				  "\nplay a video game."
-				  "\nThank you for playing!! Bye for now.\n\n")
-				exit()
+				  "\nplay a video game in your " +  device + "."
+				  "\nThank you for playing!!\n\n")
+				accepted_inputs = ["yes", "no"]
+				response = valid_input("\nWould you like to play again? Yes/No: ", accepted_inputs)
+				if response == "no":
+					print("\nThank you for playing. Bye now!!!")
+					exit()
+				else:
+					play_game()
 		else:
 			if "basket" in items:
 				print("\n\nYou have already picked up basket\n"
@@ -232,7 +241,11 @@ def desk(items):
 				   "them in your pocket\n\n")
 			items.append("keys")
 		elif response == "2":
-			print("\n\nYou do some drawing\n\n")
+			print("\n\nYou do some drawing\n")
+			drawing_choices = ["dinosaur", "cupcake", "bird"]
+			drawing = random.choice(drawing_choices)
+			print("You drew a " + drawing + "\n\n")
+			
 			items.append("paper")
 		elif response == "3":
 			if "in_desk" in items:
@@ -264,7 +277,7 @@ def desk(items):
 def instructions(times):
 	if times == 0:
 		times = 1
-		print_pause("Welcome to GARDEN!\n\n"
+		print_pause("Welcome to House Life!\n\n"
 				"Developed by Dimitrios Malonas\n"
 				)
 	print_pause("\nTo play the game you make choices\n"
@@ -318,10 +331,4 @@ def play_game():
 	instructions(times)
 	intro(items)
 	
-
-
-
-
-
-
 play_game()
